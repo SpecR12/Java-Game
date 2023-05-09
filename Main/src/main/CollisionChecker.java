@@ -2,6 +2,8 @@ package main;
 
 import entity.Entity;
 
+import java.util.Arrays;
+
 public class CollisionChecker {
     GamePanel gp;
 
@@ -57,9 +59,10 @@ public class CollisionChecker {
             }
         }
     }
-     public int checkObject(Entity entity, boolean player){
-        for(int i = 0; i < gp.obj.length; i++){
-            if(gp.obj[i] != null){
+
+    public int checkObject(Entity entity, boolean player) {
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] != null) {
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
                 gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
@@ -86,9 +89,11 @@ public class CollisionChecker {
         }
         return gp.index;
     }
-    public int checkEntity(Entity entity, Entity[] target){
-        for(int i = 0; i < target.length; i++){
-            if(target[i] != null){
+
+    public Entity checkEntity(Entity entity, Entity[] target) {
+        Entity found_entity = null;
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
@@ -100,9 +105,10 @@ public class CollisionChecker {
                     case "right" -> entity.solidArea.x += entity.speed;
                 }
                 if (entity.solidArea.intersects(target[i].solidArea)) {
-                    if(target[i] != entity){
+                    if (target[i] != entity) {
                         entity.collisionOn = true;
                         gp.index = i;
+                        found_entity = target[i];
                     }
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;
@@ -111,9 +117,10 @@ public class CollisionChecker {
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
             }
         }
-        return gp.index;
+        return found_entity;
     }
-    public void checkPlayer(Entity entity){
+
+    public void checkPlayer(Entity entity) {
         entity.solidArea.x = entity.worldX + entity.solidArea.x;
         entity.solidArea.y = entity.worldY + entity.solidArea.y;
         gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
@@ -131,6 +138,24 @@ public class CollisionChecker {
         entity.solidArea.y = entity.solidAreaDefaultY;
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+    }
+
+    public Entity getClosest(Entity target, Entity[] entity_list) {
+        Entity closest_entity = null;
+        double closest_distance = Double.MAX_VALUE;
+        for (Entity entity : entity_list) {
+            if (entity != null) {
+                int dx = target.worldX - entity.worldX;
+                int dy = target.worldY - entity.worldY;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < closest_distance) {
+                    closest_distance = distance;
+                    closest_entity = entity;
+                }
+            }
+        }
+        return closest_entity;
     }
 
 }
