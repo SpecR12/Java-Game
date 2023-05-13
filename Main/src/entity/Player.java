@@ -29,7 +29,8 @@ public class Player extends Entity {
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-        solidArea = new Rectangle(20, 14, 11, 13);
+//        solidArea = new Rectangle(20, 14, 11, 13);
+        solidArea = new Rectangle(gp.tileSize/2 - 25, gp.tileSize-80, 50, 80);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         setDefaultValues();
@@ -88,6 +89,7 @@ public class Player extends Entity {
         } else {
             direction = "idle";
         }
+
         //colisiuni
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -95,13 +97,13 @@ public class Player extends Entity {
         int objIndex = gp.cChecker.checkObject(this, true);
         pickUpObject(objIndex);
 
-        InteractNPC(gp.npc);
+        interactNPC(gp.cChecker.getClosest(this, gp.npc));
 
         gp.eHandler.checkEvent();
 
         gp.keyH.ePressed = false;
 
-        contactMonster(gp.monster);
+        contactMonster(gp.cChecker.checkEntity(this, gp.monster));
 
 
         if (!collisionOn) {
@@ -120,9 +122,9 @@ public class Player extends Entity {
                 spriteNum = 0;
             }
         }
-        if(invincible){
+        if (invincible) {
             invincibleCounter++;
-            if(invincibleCounter > 60){
+            if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
@@ -134,31 +136,31 @@ public class Player extends Entity {
 
         }
     }
-    public void InteractNPC(Entity[] entities) {
-        for (Entity entity : entities) {
-            if ((entity instanceof NPC_1 || entity instanceof NPC_2) && entity.talkable) {
-                int dx = entity.worldX - gp.player.worldX;
-                int dy = entity.worldY - gp.player.worldY;
-                double distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance <= 100 && gp.keyH.ePressed) {
-                    gp.gameState = gp.dialogueState;
-                    entity.speak();
-                    break;
-                }
+
+    public void interactNPC(Entity npc) {
+        if (npc.talkable && gp.keyH.ePressed) {
+            int dx = npc.worldX - gp.player.worldX;
+            int dy = npc.worldY - gp.player.worldY;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 100) {
+                gp.gameState = gp.dialogueState;
+                npc.speak();
             }
+
         }
     }
 
-    public void contactMonster(Entity[] entity) {
-        for (Entity entity1 : entity) {
-            System.out.println(Arrays.toString(entity));
-            if (entity1 instanceof MON_Snake && !invincible) {
+    public void contactMonster(Entity monster) {
+        if (!this.invincible && monster != null) {
+            if (monster instanceof MON_Snake) {
                 life -= 1;
                 System.out.println("Ajung aci");
                 invincible = true;
             }
         }
     }
+
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
@@ -194,7 +196,9 @@ public class Player extends Entity {
             }
         }
         if (image != null) {
-            g2.setColor(new Color(0,0,0,0));
+            g2.drawRect(screenX + this.solidArea.x, screenY + this.solidArea.y, this.solidArea.width, this.solidArea.height); //TODO show player collision
+
+            g2.setColor(new Color(0, 0, 0, 0));
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
         g2.setFont(new Font("Arial", Font.PLAIN, 26));

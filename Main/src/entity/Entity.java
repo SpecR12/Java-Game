@@ -27,7 +27,7 @@ public class Entity {
     public int spriteNum = 1;
     public int spriteNumIdle = 0;
     public int spriteNumForSnake = 0;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(0, 0, 60, 60);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -39,10 +39,14 @@ public class Entity {
     public int life;
     public boolean talkable;
     public String name;
-    public Entity(GamePanel gp){
+
+    public Entity(GamePanel gp) {
         this.gp = gp;
     }
-    public void setAction(){}
+
+    public void setAction() {
+    }
+
     public void speak() {
         if (talkable) {
             if (dialogues[dialogueIndex] == null) {
@@ -58,7 +62,8 @@ public class Entity {
             }
         }
     }
-    public void update(){
+
+    public void update() {
         setAction();
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -79,17 +84,18 @@ public class Entity {
         if (spriteCounter > 12) {
             spriteCounter = 0;
             spriteNum++;
-        //npc
+            //npc
             if (spriteNum >= 2) {
                 spriteNum = 0;
             }
-        //snake
+            //snake
             spriteNumForSnake++;
-            if(spriteNumForSnake >= 4){
+            if (spriteNumForSnake >= 4) {
                 spriteNumForSnake = 0;
             }
         }
     }
+
     public BufferedImage[] setup(String imageName, int numImages, boolean isMonster) {
         BufferedImage[] scaledImage = null;
         if (imageCache.containsKey(imageName)) {
@@ -113,7 +119,8 @@ public class Entity {
         }
         return scaledImage;
     }
-    public void draw(Graphics2D g2){
+
+    public void draw(Graphics2D g2) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
         if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
@@ -148,6 +155,7 @@ public class Entity {
                     }
                 }
             }
+            g2.drawRect(screenX + this.solidArea.x, screenY + this.solidArea.y, this.solidArea.width, this.solidArea.height); //TODO show player collision
             g2.drawImage(image, screenX, screenY, gp.tileSize - 30, gp.tileSize - 30, null);
         }
     }
