@@ -11,7 +11,6 @@ public class NPC extends Entity {
         speed = 1;
         talkable = true;
 
-        setDialogue();
     }
 
     public void getNPCImage(String file_prefix) {
@@ -22,12 +21,6 @@ public class NPC extends Entity {
         idleImages = setup(file_prefix + "_idle", 1, false);
     }
 
-    public void setDialogue() {
-        dialogues[0] = "Hello, adventurer!";
-        dialogues[1] = "Welcome to Harvestvale, the village with the most \nresources ever!";
-        dialogues[2] = "Well...what it used to be...";
-        dialogues[3] = "Now it's a ghost village, no one ever dares to come here.\n";
-    }
 
     public void setAction() {
         actionLockCounter++;

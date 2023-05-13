@@ -7,12 +7,10 @@ import java.util.Arrays;
 
 public class CollisionChecker {
     GamePanel gp;
-    Graphics2D g2;
 
-    public CollisionChecker(GamePanel gp, Graphics2D g2) {
-        this.g2 = g2;
+    public CollisionChecker(GamePanel gp) {
         this.gp = gp;
-    }   //TODO remove G2
+    }
 
     public void checkTile(Entity entity) {
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
