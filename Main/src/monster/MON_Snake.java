@@ -3,6 +3,7 @@ package monster;
 import entity.Entity;
 import main.GamePanel;
 
+import java.awt.*;
 import java.util.Random;
 
 public class MON_Snake extends Entity {
@@ -16,10 +17,8 @@ public class MON_Snake extends Entity {
         life = maxLife;
         getSnakeImage();
 
-        solidArea.x = 5;
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 32;
+        solidArea = new Rectangle(0, 0, 60, 60);
+
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
     }

@@ -27,7 +27,7 @@ public class Entity {
     public int spriteNum = 1;
     public int spriteNumIdle = 0;
     public int spriteNumForSnake = 0;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(0, 0, 60, 60);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -155,7 +155,7 @@ public class Entity {
                     }
                 }
             }
-            g2.drawRect(screenX, screenY, gp.tileSize - 30, gp.tileSize - 30); //TODO show entity collision
+            g2.drawRect(screenX + this.solidArea.x, screenY + this.solidArea.y, this.solidArea.width, this.solidArea.height); //TODO show player collision
             g2.drawImage(image, screenX, screenY, gp.tileSize - 30, gp.tileSize - 30, null);
         }
     }

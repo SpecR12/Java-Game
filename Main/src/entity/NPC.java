@@ -4,23 +4,22 @@ import main.GamePanel;
 
 import java.util.Random;
 
-public class NPC_1 extends Entity {
-    public NPC_1(GamePanel gp) {
+public class NPC extends Entity {
+    public NPC(GamePanel gp) {
         super(gp);
         direction = "idle";
         speed = 1;
         talkable = true;
 
-        getNPCImage();
         setDialogue();
     }
 
-    public void getNPCImage() {
-        upImages = setup("boschete_up", 2, false);
-        downImages = setup("boschete_down", 2, false);
-        leftImages = setup("boschete_left", 2, false);
-        rightImages = setup("boschete_right", 2, false);
-        idleImages = setup("boschete_idle", 1, false);
+    public void getNPCImage(String file_prefix) {
+        upImages = setup(file_prefix + "_up", 2, false);
+        downImages = setup(file_prefix + "_down", 2, false);
+        leftImages = setup(file_prefix + "_left", 2, false);
+        rightImages = setup(file_prefix + "_right", 2, false);
+        idleImages = setup(file_prefix + "_idle", 1, false);
     }
 
     public void setDialogue() {

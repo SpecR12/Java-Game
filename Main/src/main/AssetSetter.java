@@ -1,7 +1,6 @@
 package main;
 
-import entity.NPC_1;
-import entity.NPC_2;
+import entity.NPCFactory;
 import monster.MON_Snake;
 
 public class AssetSetter {
@@ -16,11 +15,12 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-        gp.npc[0] = new NPC_1(gp);
+        NPCFactory npc_f = new NPCFactory();
+        gp.npc[0] = npc_f.getNPC(gp, "boschete");
         gp.npc[0].worldX = gp.tileSize * 85;
         gp.npc[0].worldY = gp.tileSize * 12;
 
-        gp.npc[1] = new NPC_2(gp);
+        gp.npc[1] = npc_f.getNPC(gp, "floria");
         gp.npc[1].worldX = gp.tileSize * 80;
         gp.npc[1].worldY = gp.tileSize * 15;
     }

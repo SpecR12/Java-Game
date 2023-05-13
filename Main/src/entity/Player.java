@@ -29,7 +29,8 @@ public class Player extends Entity {
         this.keyH = keyH;
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
-        solidArea = new Rectangle(20, 14, 11, 13);
+//        solidArea = new Rectangle(20, 14, 11, 13);
+        solidArea = new Rectangle(gp.tileSize/2 - 25, gp.tileSize-80, 50, 80);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         setDefaultValues();
@@ -195,7 +196,7 @@ public class Player extends Entity {
             }
         }
         if (image != null) {
-            g2.drawRect(screenX, screenY, gp.tileSize, gp.tileSize); //TODO show player collision
+            g2.drawRect(screenX + this.solidArea.x, screenY + this.solidArea.y, this.solidArea.width, this.solidArea.height); //TODO show player collision
 
             g2.setColor(new Color(0, 0, 0, 0));
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
