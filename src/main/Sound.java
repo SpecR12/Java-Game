@@ -28,12 +28,12 @@ public class Sound {
         }
 
     }
-    public void play(){
-        clip.start();
+    public void play(){ //TODO Restore sound
+//        clip.start();
 
     }
     public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+//        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void stop(){
         clip.stop();

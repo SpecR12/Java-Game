@@ -84,39 +84,22 @@ public class Player extends Entity {
     public void update() {
 
         if (mouseH.mouseClicked) {
-            if (!attacking) {
-                setWalking(false);
-                setAttacking(true);
-            } else {
-                if (spriteNum == 6) {
-                    spriteNum = 1;
-                    setAttacking(false);
-                    setWalking(true);
-                    mouseH.mouseClicked = false;
-                }
-            }
-            attack();
+            setWalking(false);
+            setAttacking(true);
+            spriteNum = 1;
+            spriteCounter = 0;
+            mouseH.mouseClicked = false;
         }
-
-//        System.out.println(mouseH.mouseClicked);
-//        setWalking(true);
-//        if (attacking) {
-//            if (spriteNum >= 6) {
-//                setAttacking(false);
-//                mouseH.mouseClicked = false;
-//                spriteNum = 1;
-//            }
-//        } else if (mouseH.mouseClicked) {
-//            setAttacking(true);
-//            attack();
-//            if(spriteNum >= 6){
-//                setAttacking(false);
-//                spriteNum = 1;
-//                setWalking(true);
-//            }
-//        }
-        else {
-          if (keyH.upPressed) {
+        if (attacking) {
+            if (spriteCounter == 26) {
+                spriteNum = 1;
+                setAttacking(false);
+                setWalking(true);
+            } else {
+                attack();
+            }
+        } else {
+            if (keyH.upPressed) {
                 direction = "up";
             } else if (keyH.downPressed) {
                 direction = "down";
@@ -130,7 +113,7 @@ public class Player extends Entity {
                 direction = "idle";
             }
         }
-        if(keyH.ePressed){
+        if (keyH.ePressed) {
             interactNPC(gp.cChecker.getClosest(this, gp.npc));
         }
         //colisiuni
@@ -145,21 +128,24 @@ public class Player extends Entity {
 
         contactMonster(gp.cChecker.checkEntity(this, gp.monster));
 
-        if (!collisionOn && !keyH.ePressed) {
-            switch (direction) {
-                case "up" -> worldY -= speed;
-                case "down" -> worldY += speed;
-                case "left" -> worldX -= speed;
-                case "right" -> worldX += speed;
+        if (walking) {
+            if (!collisionOn && !keyH.ePressed) {
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
             }
-        }
-        gp.keyH.ePressed = false;
-        spriteCounter++;
-        if (spriteCounter > 12) {
-            spriteCounter = 0;
-            spriteNum++;
-            if (spriteNum >= 6) {
-                spriteNum = 0;
+            gp.keyH.ePressed = false;
+
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                spriteCounter = 0;
+                spriteNum++;
+                if (spriteNum >= 6) {
+                    spriteNum = 0;
+                }
             }
         }
         if (invincible) {
@@ -173,27 +159,27 @@ public class Player extends Entity {
 
     private void attack() {
         spriteCounter++;
-        spriteNum = spriteCounter / 3 % 6 + 1;
-        if(spriteCounter <= 6){
+
+        if (spriteCounter <= 6) {
+            spriteNum = 0;
+        }
+        if (spriteCounter > 6 && spriteCounter <= 10) {
             spriteNum = 1;
         }
-        if(spriteCounter > 6 && spriteCounter <= 10){
+        if (spriteCounter > 10 && spriteCounter <= 14) {
             spriteNum = 2;
         }
-        if(spriteCounter > 10 && spriteCounter <= 14){
+        if (spriteCounter > 14 && spriteCounter <= 18) {
             spriteNum = 3;
         }
-        if(spriteCounter > 14 && spriteCounter <= 18){
+        if (spriteCounter > 18 && spriteCounter <= 22) {
             spriteNum = 4;
         }
-        if(spriteCounter > 18 && spriteCounter <= 22){
+        if (spriteCounter > 22 && spriteCounter <= 26) {
             spriteNum = 5;
         }
-        if(spriteCounter > 22 && spriteCounter <= 26){
-            spriteNum = 6;
-        }
-        if(spriteCounter > 26){
-            spriteNum = 1;
+        if (spriteCounter > 26) {
+            spriteNum = 0;
             spriteCounter = 0;
         }
     }
@@ -230,13 +216,12 @@ public class Player extends Entity {
         BufferedImage image = null;
         switch (direction) {
             case "up" -> {
-                if(!attacking) {
+                if (!attacking) {
                     if (upImages.length > 0) {
                         image = upImages[spriteNum];
                     }
                 }
-                if(attacking)
-                {
+                if (attacking) {
                     if (attack.length > 0) {
                         image = attack[spriteNum];
                     }
@@ -248,8 +233,7 @@ public class Player extends Entity {
                         image = downImages[spriteNum];
                     }
                 }
-                if(attacking)
-                {
+                if (attacking) {
                     if (attack.length > 0) {
                         image = attack[spriteNum];
                     }
@@ -261,7 +245,7 @@ public class Player extends Entity {
                         image = leftImages[spriteNum];
                     }
                 }
-                if(attacking) {
+                if (attacking) {
                     if (downImages.length > 0) {
                         image = downImages[spriteNum];
                     }
@@ -273,8 +257,8 @@ public class Player extends Entity {
                         image = rightImages[spriteNum];
                     }
                 }
-                if(attacking) {
-                    if(attack.length > 0){
+                if (attacking) {
+                    if (attack.length > 0) {
                         image = attack[spriteNum];
                     }
                 }
@@ -285,20 +269,20 @@ public class Player extends Entity {
                         image = ctrlImages[spriteNum % 4];
                     }
                 }
-                if(attacking) {
-                    if(attack.length > 0){
+                if (attacking) {
+                    if (attack.length > 0) {
                         image = attack[spriteNum];
                     }
                 }
             }
             case "idle", default -> {
-                if(!attacking){
+                if (!attacking) {
                     if (idleImages.length > 0) {
                         image = idleImages[spriteNum % 4];
                     }
                 }
-                if(attacking) {
-                    if(attack.length > 0){
+                if (attacking) {
+                    if (attack.length > 0) {
                         image = attack[spriteNum];
                     }
                 }
