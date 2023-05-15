@@ -75,7 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
         while (gameThread != null) {
-
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
@@ -87,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount++;
             }
             if (timer >= 1000000000) {
-//                System.out.println(("FPS: " + FPS));
+                System.out.println(drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -126,7 +125,6 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.checkDrawTime) {
             drawStart = System.nanoTime();
         }
-
         if (gameState == titleState) {
             ui.draw(g2);
         } else {
@@ -164,6 +162,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         g2.dispose();
     }
+
 
     public void playMusic(int i) {
         music.setFile(i);

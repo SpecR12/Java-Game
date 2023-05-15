@@ -8,8 +8,10 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("Harvestvale Hero");
 
+       //GameManager gameManager = new GameManager();
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
+       //gameManager.run(gamePanel);
 
         window.pack();
         window.setLocationRelativeTo(null);
@@ -17,5 +19,6 @@ public class Main {
 
         gamePanel.setupGame();
         gamePanel.startGameThread();
+        //gameManager.close();
     }
 }

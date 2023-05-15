@@ -44,7 +44,6 @@ public class Player extends Entity {
         worldY = gp.tileSize * 13;
         speed = 4;
         direction = "idle";
-
         maxLife = 6;
         life = maxLife;
     }
@@ -337,5 +336,8 @@ public class Player extends Entity {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
+    }
+    public void getHP(int life){
+        this.life = life;
     }
 }

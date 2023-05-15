@@ -190,12 +190,10 @@ public class Entity {
                     hpBarOn = false;
                 }
             }
-
             if(invincible){
                 hpBarOn = true;
                 hpBarCounter = 0;
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
-
             }
             if(dying){
                 dyingAnimation(g2);
@@ -238,3 +236,4 @@ public class Entity {
         }
     }
 }
+
