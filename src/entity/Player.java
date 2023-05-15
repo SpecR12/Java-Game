@@ -17,8 +17,8 @@ public class Player extends Entity {
     KeyHandler keyH;
     MouseHandler mouseH;
     private final Map<String, BufferedImage[]> imageCache = new HashMap<>();
-    public final int screenX;
-    public final int screenY;
+    public int screenX;
+    public int screenY;
     private BufferedImage[] upImages;
     private BufferedImage[] downImages;
     private BufferedImage[] rightImages;
@@ -82,7 +82,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-
         if (mouseH.mouseClicked) {
             setWalking(false);
             setAttacking(true);
@@ -156,6 +155,42 @@ public class Player extends Entity {
             }
         }
     }
+    public void preparationAttack(){
+        int currentWorldX = worldX;
+        int currentWorldY = worldY;
+        int solidAreaWidth = solidArea.width;
+        int solidAreaHeight = solidArea.height;
+        switch (direction){
+            case "up" -> worldY -=attackArea.height;
+            case "down" -> worldY += attackArea.height;
+            case "left" -> worldX -= attackArea.width;
+            case "right" -> worldX += attackArea.width;
+        }
+        solidArea.width = attackArea.width;
+        solidArea.height = attackArea.height;
+
+        Entity monster = gp.cChecker.checkEntity(this, gp.monster);
+        damageMonster(monster);
+
+        worldX = currentWorldX;
+        worldY = currentWorldY;
+        solidArea.width = solidAreaWidth;
+        solidArea.height = solidAreaHeight;
+    }
+
+    private void damageMonster(Entity monster) {
+        if(monster instanceof MON_Snake){
+            if(!monster.invincible){
+                monster.life -= 1;
+                monster.invincible = true;
+                monster.damageReaction();
+                if(monster.life <= 0){
+                    monster.dying = true;
+                }
+            }
+        }
+
+    }
 
     private void attack() {
         spriteCounter++;
@@ -165,18 +200,23 @@ public class Player extends Entity {
         }
         if (spriteCounter > 6 && spriteCounter <= 10) {
             spriteNum = 1;
+            preparationAttack();
         }
         if (spriteCounter > 10 && spriteCounter <= 14) {
             spriteNum = 2;
+            preparationAttack();
         }
         if (spriteCounter > 14 && spriteCounter <= 18) {
             spriteNum = 3;
+            preparationAttack();
         }
         if (spriteCounter > 18 && spriteCounter <= 22) {
             spriteNum = 4;
+            preparationAttack();
         }
         if (spriteCounter > 22 && spriteCounter <= 26) {
             spriteNum = 5;
+            preparationAttack();
         }
         if (spriteCounter > 26) {
             spriteNum = 0;
@@ -288,10 +328,14 @@ public class Player extends Entity {
                 }
             }
         }
+        if(invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
         if (image != null) {
             g2.drawRect(screenX + this.solidArea.x, screenY + this.solidArea.y, this.solidArea.width, this.solidArea.height); //TODO show player collision
             g2.setColor(new Color(0, 0, 0, 0));
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 }
