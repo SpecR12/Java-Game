@@ -37,5 +37,9 @@ public class AssetSetter {
         gp.monster[2] = new MON_Snake(gp);
         gp.monster[2].worldX = gp.tileSize * 25;
         gp.monster[2].worldY = gp.tileSize * 11;
+
+        gp.monster[3] = new MON_Snake(gp);
+        gp.monster[3].worldX = gp.tileSize * 82;
+        gp.monster[3].worldY = gp.tileSize * 16;
     }
 }

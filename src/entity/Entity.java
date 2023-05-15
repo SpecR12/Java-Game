@@ -1,7 +1,6 @@
 package entity;
 
 import main.GamePanel;
-import monster.MON_Snake;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -174,12 +173,17 @@ public class Entity {
                 }
                 case "idle", default -> {
                     if (idleImages.length > 0) {
-                        image = idleImages[spriteNumIdle % 4];
+                        image = idleImages[spriteNumIdle];
                     }
                 }
             }
             if(hpBarOn) {
-                MonsterHealthBar(g2);
+                double oneScale = (double)gp.tileSize/maxLife;
+                double hpBarValue = oneScale*life;
+                g2.setColor(new Color(35, 35, 35));
+                g2.fillRect(screenX-1, screenY-16, gp.tileSize+2, 12);
+                g2.setColor(new Color(255, 0, 30));
+                g2.fillRect(screenX, screenY-15, (int) hpBarValue, 10);
                 hpBarCounter++;
                 if(hpBarCounter > 600){
                     hpBarCounter = 0;
@@ -231,20 +235,6 @@ public class Entity {
         if(dyingCounter > 40){
             dying = false;
             alive = false;
-        }
-    }
-    public void MonsterHealthBar(Graphics2D g2){
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-        for(Entity monster : gp.monster) {
-            if (monster instanceof MON_Snake) {
-                double oneScale = (double)gp.tileSize/maxLife;
-                double hpBarValue = oneScale*life;
-                g2.setColor(new Color(35, 35, 35));
-                g2.fillRect(screenX-1, screenY-16, gp.tileSize+2, 12);
-                g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(screenX, screenY-15, (int) hpBarValue, 10);
-            }
         }
     }
 }

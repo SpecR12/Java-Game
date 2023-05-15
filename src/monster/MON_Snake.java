@@ -51,6 +51,8 @@ public class MON_Snake extends Entity {
     }
     public void damageReaction(){
         actionLockCounter = 0;
-        direction = gp.player.direction;
+        if(idleImages != null) {
+            direction = gp.player.direction;
+        }
     }
 }
