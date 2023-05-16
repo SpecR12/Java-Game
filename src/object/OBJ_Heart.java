@@ -11,7 +11,6 @@ public class OBJ_Heart extends SuperObject{
     public OBJ_Heart(GamePanel gp){
         this.gp = gp;
         name = "Heart";
-        //de facut mai multe tile-uri pentru keys
         try{
             imageHeart[0] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/0.png")));
             imageHeart[1] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/1.png")));

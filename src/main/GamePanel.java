@@ -7,6 +7,8 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -38,6 +40,9 @@ public class GamePanel extends JPanel implements Runnable {
     public SuperObject[] obj = new SuperObject[10];
     public Entity[] npc = new Entity[10];
     public Entity[] monster = new Entity[20];
+    ArrayList<Entity> entityListPlayer = new ArrayList<>();
+    ArrayList<Entity> entityListNPC = new ArrayList<>();
+    ArrayList<Entity> entityListMonsters = new ArrayList<>();
     public AssetSetter aSetter = new AssetSetter(this);
     //Game State
     public int gameState;
@@ -73,7 +78,6 @@ public class GamePanel extends JPanel implements Runnable {
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        int drawCount = 0;
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
@@ -83,11 +87,8 @@ public class GamePanel extends JPanel implements Runnable {
                 update();
                 repaint();
                 delta--;
-                drawCount++;
             }
             if (timer >= 1000000000) {
-                System.out.println(drawCount);
-                drawCount = 0;
                 timer = 0;
             }
         }
@@ -107,7 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
                         entity.update();
                     }
                     if (!entity.alive) {
-                        System.gc();
+                        entityListMonsters.remove(entity);
                     }
                 }
             }
@@ -121,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         long drawStart = 0;
-        int playerY = player.worldY;
+        //int playerY = player.worldY;
         if (keyH.checkDrawTime) {
             drawStart = System.nanoTime();
         }
@@ -134,22 +135,44 @@ public class GamePanel extends JPanel implements Runnable {
                     superObject.draw(g2, this);
                 }
             }
-            for (Entity entity : npc) {
-                if (entity != null) {
-                    int npcY = entity.worldY;
-                    if (playerY < npcY) {
-                        player.draw(g2);
-                        entity.draw(g2);
-                    } else {
-                        entity.draw(g2);
-                        player.draw(g2);
-                    }
+            //add npc to list
+            entityListPlayer.add(player);
+            //sort player
+            entityListPlayer.sort(Comparator.comparingInt(e -> e.worldY));
+            for (Entity entity : entityListPlayer) {
+                entity.draw(g2);
+            }
+            for(int i = 0; i < entityListPlayer.size(); i++){
+                entityListPlayer.remove(i);
+            }
+            for (Entity value : npc) {
+                if (value != null) {
+                    entityListNPC.add(value);
                 }
             }
+            //sort npc
+            entityListNPC.sort(Comparator.comparingInt(e -> e.worldY));
+            //draw npc
+            for (Entity entity : entityListNPC) {
+                entity.draw(g2);
+            }
+            for(int i = 0; i < entityListNPC.size(); i++){
+                entityListNPC.remove(i);
+            }
+            //add monster to list
             for (Entity entity : monster) {
                 if (entity != null) {
-                    entity.draw(g2);
+                    entityListMonsters.add(entity);
                 }
+            }
+            //sort
+            entityListMonsters.sort(Comparator.comparingInt(e -> e.worldY));
+            //draw monsters
+            for(Entity entity : entityListMonsters){
+                entity.draw(g2);
+            }
+            for(int i = 0; i < entityListMonsters.size(); i++){
+                entityListMonsters.remove(i);
             }
             ui.draw(g2);
         }

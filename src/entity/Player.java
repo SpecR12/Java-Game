@@ -4,11 +4,13 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.MouseHandler;
 import monster.MON_Snake;
+import object.SuperObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class Player extends Entity {
     private BufferedImage[] rightImages;
     private BufferedImage[] leftImages;
     private BufferedImage[] idleImages;
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH) {
         super(gp);
@@ -119,8 +122,7 @@ public class Player extends Entity {
         gp.cChecker.checkTile(this);
         gp.cChecker.checkEntity(this, gp.npc);
 
-        int objIndex = gp.cChecker.checkObject(this, true);
-        pickUpObject(objIndex);
+        pickUpObject(gp.cChecker.checkObject(this, true));
 
         gp.eHandler.checkEvent();
 
@@ -222,13 +224,25 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
     }
-
-    public void pickUpObject(int i) {
-        if (i != 999) {
-
+    ArrayList<SuperObject> objectArray = new ArrayList<>();
+    public void pickUpObject(SuperObject object) {
+            objectArray.add(object);
+            if (object != null) {
+                String objectName = object.name;
+                switch (objectName) {
+                    case "Key" -> {
+                        hasKey++;
+                        objectArray.remove(object);
+                    }
+                    case "Chest" -> {
+                        if (hasKey > 0) {
+                            hasKey--;
+                            objectArray.remove(object);
+                        }
+                    }
+                }
+            }
         }
-    }
-
     public void interactNPC(Entity npc) {
         if (npc.talkable && gp.keyH.ePressed) {
             int dx = npc.worldX - gp.player.worldX;

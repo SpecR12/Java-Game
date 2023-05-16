@@ -2,6 +2,8 @@ package main;
 
 import entity.NPCFactory;
 import monster.MON_Snake;
+import object.OBJ_Chest;
+import object.OBJ_Key;
 
 public class AssetSetter {
     GamePanel gp;
@@ -11,6 +13,13 @@ public class AssetSetter {
     }
 
     public void setObject() {
+        gp.obj[0] = new OBJ_Key(gp);
+        gp.obj[0].worldX = gp.tileSize * 25;
+        gp.obj[0].worldY = gp.tileSize * 12;
+
+        gp.obj[1] = new OBJ_Chest(gp);
+        gp.obj[1].worldX = gp.tileSize * 18;
+        gp.obj[1].worldY = gp.tileSize * 1;
 
     }
 
@@ -39,7 +48,7 @@ public class AssetSetter {
         gp.monster[2].worldY = gp.tileSize * 11;
 
         gp.monster[3] = new MON_Snake(gp);
-        gp.monster[3].worldX = gp.tileSize * 82;
-        gp.monster[3].worldY = gp.tileSize * 16;
+        gp.monster[3].worldX = gp.tileSize * 28;
+        gp.monster[3].worldY = gp.tileSize * 14;
     }
 }

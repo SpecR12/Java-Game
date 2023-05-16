@@ -23,7 +23,7 @@ public class Entity {
     public BufferedImage[] idleImages;
     public BufferedImage[] ctrlImages;
     public BufferedImage[] attack;
-    public String direction;
+    public String direction = "idle";
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public int spriteNumIdle = 0;
