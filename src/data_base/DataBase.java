@@ -3,112 +3,71 @@ package data_base;
 import java.sql.*;
 
 public class DataBase {
-    private Connection conn;
+    private final String gameName;
+    private final String playerName;
+    private final int level;
+    private final int strength;
+    private final int dexterity;
+    private final int attackPlayer;
+    private final int defence;
+    private final int exp;
+    private final int coin;
+    private final int life;
 
-    public DataBase(){
-        try{
+    public DataBase(String gameName, String playerName, int life, int level, int strength, int dexterity, int attackPlayer, int defence, int exp, int coin) {
+        this.gameName = gameName;
+        this.playerName = playerName;
+        this.level = level;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.attackPlayer = attackPlayer;
+        this.defence = defence;
+        this.exp = exp;
+        this.coin = coin;
+        this.life = life;
+    }
+
+    public void loadAndStoreData() {
+        Connection connection = null;
+        try {
+            // Load the JDBC driver for SQLite
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:game.db");
-            Statement state = conn.createStatement();
-            state.execute("CREATE TABLE IF NOT EXISTS game_data ("
-                    + "player_hp INTEGER, player_attack INTEGER,"
-                    + "monster_hp INTEGER, monster_attack INTEGER"
-                    + ")");
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public int getPlayerHP(){
-        int hp = 0;
-        try{
-            Statement state = conn.createStatement();
-            ResultSet rs = state.executeQuery("SELECT player_hp FROM game_data");
-            if(rs.next()) {
-                hp = rs.getInt("player_hp");
+
+            // Connect to the SQLite database
+            String url = "jdbc:sqlite:/Game/game.db";
+            connection = DriverManager.getConnection(url);
+
+            connection.setAutoCommit(false);
+
+            // Prepare the SQL query to insert the game data
+            String sql = "INSERT INTO game_data (game_name, player_name, life, level, strength, dexterity, 'attack', defence, exp, coin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, gameName);
+            statement.setString(2, playerName);
+            statement.setInt(3, life);
+            statement.setInt(4, level);
+            statement.setInt(5, strength);
+            statement.setInt(6, dexterity);
+            statement.setInt(7, attackPlayer);
+            statement.setInt(8, defence);
+            statement.setInt(9, exp);
+            statement.setInt(10, coin);
+
+            statement.executeUpdate();
+
+            connection.commit();
+
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            try{
+                if(connection != null){
+                    connection.rollback();
+                }
+            } catch (SQLException ex){
+                System.out.println("Error rolling back changes: " + ex.getMessage());
             }
-            rs.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return hp;
-    }
-    public void setPlayerHP(int hp){
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE game_data SET player_hp = ?");
-            pstmt.setInt(1, hp);
-            pstmt.executeUpdate();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public int getPlayerAttack(){
-        int attack = 0;
-        try {
-            Statement state = conn.createStatement();
-            ResultSet rs = state.executeQuery("SELECT player_attack FROM game_data");
-            if(rs.next()) {
-                attack = rs.getInt("player_attack");
-            }
-            rs.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return attack;
-    }
-    public void setPlayerAttack(int attack) {
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE game_data SET player_attack = ?");
-            pstmt.setInt(1, attack);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public int getMonsterHP() {
-        int hp = 0;
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT monster_hp FROM game_data");
-            hp = rs.getInt("monster_hp");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return hp;
-    }
-    public void setMonsterHP(int hp) {
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE game_data SET monster_hp = ?");
-            pstmt.setInt(1, hp);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public int getMonsterAttack() {
-        int attack = 0;
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT monster_attack FROM game_data");
-            attack = rs.getInt("monster_attack");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return attack;
-    }
-    public void setMonsterAttack(int attack) {
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE game_data SET monster_attack = ?");
-            pstmt.setInt(1, attack);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void closeConnection() {
-        try {
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

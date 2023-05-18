@@ -1,5 +1,6 @@
 package main;
 
+import data_base.DataBase;
 import entity.Entity;
 import entity.Player;
 import object.SuperObject;
@@ -43,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
     ArrayList<Entity> entityListPlayer = new ArrayList<>();
     ArrayList<Entity> entityListNPC = new ArrayList<>();
     ArrayList<Entity> entityListMonsters = new ArrayList<>();
+    DataBase loadGame = new DataBase("Harvestvale Hero", "Alex", player.life, player.level, player.strength, player.dexterity, player.attackPlayer, player.defence, player.exp, player.coin);
     public AssetSetter aSetter = new AssetSetter(this);
     //Game State
     public int gameState;
@@ -50,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+    public final int characterState = 4;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -114,7 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
         if (gameState == pauseState) {
-            //nothing
+            loadGame.loadAndStoreData();
         }
     }
 

@@ -9,12 +9,16 @@ import java.awt.image.BufferedImage;
 public class SuperObject {
     public BufferedImage imageKey, imageChest;
     public BufferedImage[] imageHeart = new BufferedImage[3];
+    public BufferedImage imageSword;
+    public BufferedImage imageShield;
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
+    public int defenceValue;
+    public int attackValue;
     UtilityTool uTool = new UtilityTool();
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;

@@ -19,7 +19,7 @@ public class AssetSetter {
 
         gp.obj[1] = new OBJ_Chest(gp);
         gp.obj[1].worldX = gp.tileSize * 18;
-        gp.obj[1].worldY = gp.tileSize * 1;
+        gp.obj[1].worldY = gp.tileSize;
 
     }
 
@@ -35,20 +35,25 @@ public class AssetSetter {
     }
 
     public void setMonster() {
-        gp.monster[0] = new MON_Snake(gp);
-        gp.monster[0].worldX = gp.tileSize * 26; //26
-        gp.monster[0].worldY = gp.tileSize * 14; //14
+        int i = 0;
+        gp.monster[i] = new MON_Snake(gp);
+        gp.monster[i].worldX = gp.tileSize * 26; //26
+        gp.monster[i].worldY = gp.tileSize * 14; //14
+        i++;
 
-        gp.monster[1] = new MON_Snake(gp);
-        gp.monster[1].worldX = gp.tileSize * 26;
-        gp.monster[1].worldY = gp.tileSize * 12;
+        gp.monster[i] = new MON_Snake(gp);
+        gp.monster[i].worldX = gp.tileSize * 26;
+        gp.monster[i].worldY = gp.tileSize * 12;
+        i++;
 
-        gp.monster[2] = new MON_Snake(gp);
-        gp.monster[2].worldX = gp.tileSize * 25;
-        gp.monster[2].worldY = gp.tileSize * 11;
+        gp.monster[i] = new MON_Snake(gp);
+        gp.monster[i].worldX = gp.tileSize * 25;
+        gp.monster[i].worldY = gp.tileSize * 11;
+        i++;
 
-        gp.monster[3] = new MON_Snake(gp);
-        gp.monster[3].worldX = gp.tileSize * 28;
-        gp.monster[3].worldY = gp.tileSize * 14;
+        gp.monster[i] = new MON_Snake(gp);
+        gp.monster[i].worldX = gp.tileSize * 28;
+        gp.monster[i].worldY = gp.tileSize * 14;
+        i++;
     }
 }

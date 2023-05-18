@@ -38,7 +38,7 @@ public class EventHandler {
             if (hit(93, 6, "down")) {
                 damage(gp.dialogueState);
             }
-            if (hit(96, 6, "down")) {
+            if (hit(96, 6, "idle")) {
                 healingPool(gp.dialogueState);
             }
         }
@@ -76,6 +76,7 @@ public class EventHandler {
             gp.gameState = gameState;
             gp.ui.currentDialogue = "You pressed E (EA sports)";
             gp.player.life = gp.player.maxLife;
+            gp.aSetter.setMonster();
         }
         gp.keyH.ePressed = false;
     }

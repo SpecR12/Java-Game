@@ -1,9 +1,12 @@
 package entity;
 
+import data_base.DataBase;
 import main.GamePanel;
 import main.KeyHandler;
 import main.MouseHandler;
 import monster.MON_Snake;
+import object.OBJ_Shield;
+import object.OBJ_Sword;
 import object.SuperObject;
 
 import javax.imageio.ImageIO;
@@ -27,7 +30,7 @@ public class Player extends Entity {
     private BufferedImage[] leftImages;
     private BufferedImage[] idleImages;
     int hasKey = 0;
-
+    ArrayList<SuperObject> objectArray = new ArrayList<>();
     public Player(GamePanel gp, KeyHandler keyH, MouseHandler mouseH) {
         super(gp);
         this.keyH = keyH;
@@ -47,8 +50,26 @@ public class Player extends Entity {
         worldY = gp.tileSize * 13;
         speed = 4;
         direction = "idle";
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1;
+        dexterity = 1;
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword(gp);
+        currentShield = new OBJ_Shield(gp);
+        attackPlayer = getAttack();
+        defence = getDefence();
+    }
+
+    private int getDefence() {
+        return defence = dexterity * currentShield.defenceValue;
+    }
+
+    private int getAttack() {
+        return attackPlayer = strength * currentWeapon.attackValue;
     }
 
     public void getPlayerImage() {
@@ -182,17 +203,50 @@ public class Player extends Entity {
     private void damageMonster(Entity monster) {
         if(monster instanceof MON_Snake){
             if(!monster.invincible){
-                monster.life -= 1;
+                int damage = attackPlayer - monster.defence;
+                if(damage < 0){
+                    damage = 0;
+                }
+                monster.life -= damage;
+                gp.ui.addMessage(damage + " damage!");
                 monster.invincible = true;
                 monster.damageReaction();
                 if(monster.life <= 0){
                     monster.dying = true;
+                    gp.ui.addMessage("You killed " + monster.name + " !");
+                    gp.ui.addMessage("Exp: + " + monster.exp);
+                    exp += monster.exp;
+                    checkLevelUp();
                 }
             }
         }
-
     }
 
+    private void checkLevelUp() {
+        if(exp >= nextLevelExp){
+            level++;
+            nextLevelExp =  nextLevelExp * 2;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+            attackPlayer = getAttack();
+            defence = getDefence();
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue = "You are level " + level + " now!\n";
+        }
+    }
+
+    public void gettingDamageFromMonster(Entity monster){
+        if(monster instanceof MON_Snake){
+            if(!monster.invincible){
+                int damage = attackPlayer - gp.player.defence;
+                if (damage < 0) {
+                    damage = 0;
+                }
+                gp.player.life -= damage;
+            }
+        }
+    }
     private void attack() {
         spriteCounter++;
 
@@ -224,7 +278,6 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
     }
-    ArrayList<SuperObject> objectArray = new ArrayList<>();
     public void pickUpObject(SuperObject object) {
             objectArray.add(object);
             if (object != null) {
@@ -255,16 +308,18 @@ public class Player extends Entity {
 
         }
     }
-
     public void contactMonster(Entity monster) {
         if (!this.invincible && monster != null) {
             if (monster instanceof MON_Snake) {
-                life -= 1;
+                int damage = monster.attackPlayer - defence;
+                if(damage < 0){
+                    damage = 0;
+                }
+                life -= damage;
                 invincible = true;
             }
         }
     }
-
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
@@ -351,7 +406,5 @@ public class Player extends Entity {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
-    public void getHP(int life){
-        this.life = life;
-    }
+
 }

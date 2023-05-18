@@ -15,6 +15,9 @@ public class MON_Snake extends Entity {
         talkable = false;
         maxLife = 4;
         life = maxLife;
+        attackPlayer = 5;
+        defence = 0;
+        exp = 2;
         getSnakeImage();
 
         solidArea = new Rectangle(0, 0, 60, 60);

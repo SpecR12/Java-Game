@@ -95,6 +95,9 @@ public class KeyHandler implements KeyListener{
              if (code == KeyEvent.VK_P) {
                  gp.gameState = gp.pauseState;
              }
+             if(code == KeyEvent.VK_C){
+                 gp.gameState = gp.characterState;
+             }
              if(code == KeyEvent.VK_E){
                  ePressed = true;
              }
@@ -106,6 +109,11 @@ public class KeyHandler implements KeyListener{
          }
          else if(gp.gameState == gp.dialogueState){
              if(code == KeyEvent.VK_E){
+                 gp.gameState = gp.playState;
+             }
+         }
+         else if(gp.gameState == gp.characterState){
+             if(code == KeyEvent.VK_C){
                  gp.gameState = gp.playState;
              }
          }

@@ -1,6 +1,8 @@
 package entity;
 
 import main.GamePanel;
+import monster.MON_Snake;
+import object.SuperObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -48,7 +50,16 @@ public class Entity {
     public int dyingCounter = 0;
     public boolean hpBarOn = false;
     public int hpBarCounter = 0;
-
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attackPlayer;
+    public int defence;
+    public int exp;
+    public int nextLevelExp;
+    public int coin;
+    public SuperObject currentWeapon;
+    public SuperObject currentShield;
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
@@ -86,6 +97,11 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.npc);
         gp.cChecker.checkEntity(this, gp.monster);
         gp.cChecker.checkPlayer(this);
+        for(Entity monster : gp.monster){
+            if(monster instanceof MON_Snake){
+                gp.player.gettingDamageFromMonster(monster);
+            }
+        }
         if (!collisionOn) {
             switch (direction) {
                 case "up" -> worldY -= speed;
