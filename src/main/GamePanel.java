@@ -44,7 +44,6 @@ public class GamePanel extends JPanel implements Runnable {
     ArrayList<Entity> entityListPlayer = new ArrayList<>();
     ArrayList<Entity> entityListNPC = new ArrayList<>();
     ArrayList<Entity> entityListMonsters = new ArrayList<>();
-    DataBase loadGame = new DataBase("Harvestvale Hero", "Alex", player.life, player.level, player.strength, player.dexterity, player.attackPlayer, player.defence, player.exp, player.coin);
     public AssetSetter aSetter = new AssetSetter(this);
     //Game State
     public int gameState;
@@ -117,6 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
         if (gameState == pauseState) {
+            DataBase loadGame = new DataBase("Harvestvale Hero", "Alex", player.life, player.level, player.strength, player.dexterity, player.attackPlayer, player.defence, player.exp, player.coin);
             loadGame.loadAndStoreData();
         }
     }
