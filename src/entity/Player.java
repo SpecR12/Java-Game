@@ -1,6 +1,5 @@
 package entity;
 
-import data_base.DataBase;
 import main.GamePanel;
 import main.KeyHandler;
 import main.MouseHandler;
@@ -136,7 +135,7 @@ public class Player extends Entity {
             }
         }
         if (keyH.ePressed) {
-            interactNPC(gp.cChecker.getClosest(this, gp.npc));
+            interactNPC(gp.cChecker.getClosest(this, gp.npc[gp.currentMap]));
         }
         //colisiuni
         collisionOn = false;
@@ -191,8 +190,8 @@ public class Player extends Entity {
         solidArea.width = attackArea.width;
         solidArea.height = attackArea.height;
 
-        Entity monster = gp.cChecker.checkEntity(this, gp.monster);
-        damageMonster(monster);
+        Entity[] monster = gp.cChecker.checkEntity(this, gp.monster);
+        damageMonster(monster[gp.currentMap]);
 
         worldX = currentWorldX;
         worldY = currentWorldY;
@@ -236,9 +235,9 @@ public class Player extends Entity {
         }
     }
 
-    public void gettingDamageFromMonster(Entity monster){
-        if(monster instanceof MON_Snake){
-            if(!monster.invincible){
+    public void gettingDamageFromMonster(Entity[] monster){
+        if(monster[gp.currentMap] instanceof MON_Snake){
+            if(!monster[gp.currentMap].invincible){
                 int damage = attackPlayer - gp.player.defence;
                 if (damage < 0) {
                     damage = 0;
@@ -278,19 +277,20 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
     }
-    public void pickUpObject(SuperObject object) {
-            objectArray.add(object);
-            if (object != null) {
-                String objectName = object.name;
+    public void pickUpObject(SuperObject[] object) {
+        objectArray.add(object[gp.currentMap]);
+            if (object[gp.currentMap] != null) {
+                objectArray.add(object[gp.currentMap]);
+                String objectName = object[gp.currentMap].name;
                 switch (objectName) {
                     case "Key" -> {
                         hasKey++;
-                        objectArray.remove(object);
+                        objectArray.remove(object[gp.currentMap]);
                     }
                     case "Chest" -> {
                         if (hasKey > 0) {
                             hasKey--;
-                            objectArray.remove(object);
+                            objectArray.remove(object[gp.currentMap]);
                         }
                     }
                 }
@@ -308,10 +308,10 @@ public class Player extends Entity {
 
         }
     }
-    public void contactMonster(Entity monster) {
-        if (!this.invincible && monster != null) {
-            if (monster instanceof MON_Snake) {
-                int damage = monster.attackPlayer - defence;
+    public void contactMonster(Entity[] monster) {
+        if (!this.invincible && monster[gp.currentMap] != null) {
+            if (monster[gp.currentMap] instanceof MON_Snake) {
+                int damage = monster[gp.currentMap].attackPlayer - defence;
                 if(damage < 0){
                     damage = 0;
                 }
@@ -406,5 +406,4 @@ public class Player extends Entity {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
-
 }

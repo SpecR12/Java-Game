@@ -97,8 +97,8 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.npc);
         gp.cChecker.checkEntity(this, gp.monster);
         gp.cChecker.checkPlayer(this);
-        for(Entity monster : gp.monster){
-            if(monster instanceof MON_Snake){
+        for(Entity[] monster : gp.monster){
+            if(monster[gp.currentMap] instanceof MON_Snake){
                 gp.player.gettingDamageFromMonster(monster);
             }
         }
