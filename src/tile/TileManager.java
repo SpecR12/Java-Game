@@ -26,6 +26,7 @@ public class TileManager{
         getTileImage();
         loadMap("/maps/map01.txt", 0);
         loadMap("/maps/map02.txt", 1);
+        //loadMap("/maps/map03.txt", 2);
     }
     public void getTileImage() {
             setupBufferImage(0, "grass", false);
@@ -53,7 +54,8 @@ public class TileManager{
             setupBufferImage(22, "preview-2",true);
             setupBufferImage(23, "portal", false);
             setupBufferImage(24, "volcano_floor", false);
-            setupBufferImage(25, "lava", false);
+            setupBufferImage(25, "lava", true);
+            setupBufferImage(26, "portal2", false);
     }
     public void setupGIF(int index, String gifName, boolean collision){
         tile[index] = new Tile();
@@ -88,7 +90,9 @@ public class TileManager{
     public void loadMap(String filePath, int map) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
-            assert is != null;
+            if (is == null) {
+                throw new IllegalArgumentException("File not found: " + filePath);
+            }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             int col = 0;
             int row = 0;
@@ -106,8 +110,9 @@ public class TileManager{
                 }
             }
             br.close();
-
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void draw(Graphics2D g2) {
         int worldCol = 0;

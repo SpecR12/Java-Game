@@ -297,15 +297,19 @@ public class Player extends Entity {
             }
         }
     public void interactNPC(Entity npc) {
-        if (npc.talkable && gp.keyH.ePressed) {
-            int dx = npc.worldX - gp.player.worldX;
-            int dy = npc.worldY - gp.player.worldY;
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 100) {
-                gp.gameState = gp.dialogueState;
-                npc.speak();
+        if (npc != null) {
+            if (npc.talkable && gp.keyH.ePressed) {
+                int dx = npc.worldX - gp.player.worldX;
+                int dy = npc.worldY - gp.player.worldY;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    gp.gameState = gp.dialogueState;
+                    npc.speak();
+                }
+            } else {
+                npc.talkable = false;
+                gp.keyH.ePressed = false;
             }
-
         }
     }
     public void contactMonster(Entity[] monster) {

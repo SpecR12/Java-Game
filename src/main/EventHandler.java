@@ -52,6 +52,9 @@ public class EventHandler {
             else if(hit(1, 3, 2, "any")){
                 teleport(0, 88, 21);
             }
+            else if(hit(1, 4, 2, "any")){
+                healingPool(gp.dialogueState);
+            }
         }
     }
 
@@ -96,7 +99,7 @@ public class EventHandler {
     public void healingPool(int gameState) {
         if (gp.keyH.ePressed) {
             gp.gameState = gameState;
-            gp.ui.currentDialogue = "You pressed E (EA sports)";
+            gp.ui.currentDialogue = "You are fresh again.";
             gp.player.life = gp.player.maxLife;
             gp.aSetter.setMonster();
         }
