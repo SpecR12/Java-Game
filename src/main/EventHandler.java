@@ -55,6 +55,12 @@ public class EventHandler {
             else if(hit(1, 4, 2, "any")){
                 healingPool(gp.dialogueState);
             }
+            else if(hit(1, 9, 2, "any")){
+                teleport(2,3,4);
+            }
+            else if(hit(2, 3, 4, "any")){
+                teleport(1,9,2);
+            }
         }
     }
 

@@ -26,9 +26,10 @@ public class TileManager{
         getTileImage();
         loadMap("/maps/map01.txt", 0);
         loadMap("/maps/map02.txt", 1);
-        //loadMap("/maps/map03.txt", 2);
+        loadMap("/maps/map03.txt", 2);
     }
     public void getTileImage() {
+            //world1
             setupBufferImage(0, "grass", false);
             setupBufferImage(1, "another_stone", false);
             setupGIF(2, "watergif", true);
@@ -53,9 +54,13 @@ public class TileManager{
             setupBufferImage(21, "bench_rotated2",true);
             setupBufferImage(22, "preview-2",true);
             setupBufferImage(23, "portal", false);
+            //world2
             setupBufferImage(24, "volcano_floor", false);
             setupBufferImage(25, "lava", true);
             setupBufferImage(26, "portal2", false);
+            //world3
+            setupBufferImage(27, "brick", true);
+            setupBufferImage(28, "portal3", false);
     }
     public void setupGIF(int index, String gifName, boolean collision){
         tile[index] = new Tile();
